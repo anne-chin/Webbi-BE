@@ -1,0 +1,88 @@
+###########################
+## Med resource endpoints
+
+## get all med log
+GET  http://localhost:3000/api/med/2
+
+## modify med instruction
+PUT  http://localhost:3000/api/med/2
+Content-Type: application/json
+{
+  "user_id": "2",
+  "name": "QuickIns",
+  "bs_l1": "8",
+  "d_l1": "3",
+  "bs_l2": "4",
+  "ds_l2": "2",
+  "note": "add 1IU every third bd value after 8",
+}
+
+
+
+content
+
+###########################
+## Users resource endpoints
+
+### get all users
+GET http://localhost:3000/api/users
+
+### get user by id
+GET http://localhost:3000/api/users/3
+
+### create a new user (user registration)
+POST http://localhost:3000/api/users
+content-type: application/json
+
+{
+  "username": "newusername",
+  "password": "passwordx",
+  "email": "newemail@example.com",
+  "birthday": "1989-05-11"
+}
+
+### modify an existing user by id
+PUT http://localhost:3000/api/users/3
+content-type: application/json
+
+{
+  "username": "editedname",
+  "password": "editedpasswordx",
+  "email": "editedmail@example.com",
+  "birthday": "1989-05-12"
+}
+
+### delete a user (by id)
+DELETE http://localhost:3000/api/users/3
+
+### user login
+POST http://localhost:3000/api/users/login
+content-type: application/json
+
+{
+  "username": "newusername",
+  "password": "passwordx"
+}
+
+### get my user info
+GET http://localhost:3000/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo3LCJ1c2VybmFtZSI6Im5ld3VzZXJuYW1lIiwiZW1haWwiOiJuZXdlbWFpbEBleGFtcGxlLmNvbSIsImNyZWF0ZWRfYXQiOiIyMDI1LTAyLTA2VDEzOjA5OjA3LjAwMFoiLCJ1c2VyX2xldmVsIjoicmVndWxhciIsImlhdCI6MTczOTM2NTk0MiwiZXhwIjoxNzM5NDUyMzQyfQ.IO9ly-VkHACUPca_TGNlNGLA3brezP-tck1yQ1nFC5M
+
+## (Diary)Entries
+
+### post a new entry
+POST http://localhost:3000/api/entries
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJuZXd1c2VybmFtZTIiLCJwYXNzd29yZCI6IiQyYSQxMCRNZVpETzZ4ckpIVFNncnVrZ1ZtR2wuaFRLVUp1NjUwc1c1MlNoOHhRcjhHTlJuUlV1N1FXQyIsImVtYWlsIjoibmV3ZW1haWwyQGV4YW1wbGUuY29tIiwiY3JlYXRlZF9hdCI6IjIwMjUtMDItMTNUMTE6NDg6NTIuMDAwWiIsInVzZXJfbGV2ZWwiOiJyZWd1bGFyIiwiaWF0IjoxNzQwNjU1ODA4LCJleHAiOjE3NDA3NDIyMDh9.VdHENb37OV-5CuCTxCdY22BdBpSL90XrNpxM0N-Vh4c
+content-type: application/json
+
+{
+ "entry_date": "2025-02-27",
+ "mood": "iloinen",
+ "weight": 60,
+ "sleep_hours": 6,
+ "notes": "iloinen"
+}
+
+### Get user's entries
+GET http://localhost:3000/api/entries
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJuZXd1c2VybmFtZTIiLCJwYXNzd29yZCI6IiQyYSQxMCRNZVpETzZ4ckpIVFNncnVrZ1ZtR2wuaFRLVUp1NjUwc1c1MlNoOHhRcjhHTlJuUlV1N1FXQyIsImVtYWlsIjoibmV3ZW1haWwyQGV4YW1wbGUuY29tIiwiY3JlYXRlZF9hdCI6IjIwMjUtMDItMTNUMTE6NDg6NTIuMDAwWiIsInVzZXJfbGV2ZWwiOiJyZWd1bGFyIiwiaWF0IjoxNzQwNjU1ODA4LCJleHAiOjE3NDA3NDIyMDh9.VdHENb37OV-5CuCTxCdY22BdBpSL90XrNpxM0N-Vh4
