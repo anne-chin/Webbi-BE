@@ -12,11 +12,11 @@ medRouter
   .route('/')
   .post(
     authenticateToken,
-    body('name').notEmpty.isAlpha({min:2, max:10}),
+    body('name').notEmpty().isAlpha({min:2, max:10}),
     body('bs_l1').trim().notEmpty().isDecimal,
-    body('d_l1').notEmpty.isInt(),
+    body('d_l1').notEmpty().isInt(),
     body('bs_l2').trim().notEmpty().isDecimal,
-    body('d_l2').notEmpty.isInt(),
+    body('d_l2').notEmpty().isInt(),
     body('notes').trim().escape(),
     validationErrorHandler,
     postMedEntry,

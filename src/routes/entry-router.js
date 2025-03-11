@@ -16,7 +16,7 @@ entryRouter
     body('entry_date').notEmpty().isDate(),
     body('bs').trim().notEmpty().isDecimal,
     body('insulin').isAlpha({min: 2, max: 20}),
-    body('giver').notEmpty.isAlpha({min: 0, max: 10}),
+    body('giver').notEmpty().isAlpha({min: 2, max: 10}),
     body('notes').trim().escape(),
     validationErrorHandler,
     postEntry,
