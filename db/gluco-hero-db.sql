@@ -8,8 +8,8 @@ CREATE TABLE Users (
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     birthday DATE NOT NULL DEFAULT,
-    created_at DATETIME NOT NULL DEFAULT NOW(),
-    user_level VARCHAR(10) DEFAULT 'regular'
+    created_at DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    user_level VARCHAR(10) DEFAULT 'regular',
 );
 
 CREATE TABLE DiaryEntries (
