@@ -12,16 +12,18 @@ medRouter
   .route('/')
   .post(
     authenticateToken,
-    body('name').notEmpty().isAlpha({min:2, max:10}),
-    body('bs_l1').trim().notEmpty().isDecimal,
-    body('d_l1').notEmpty().isInt(),
-    body('bs_l2').trim().notEmpty().isDecimal,
-    body('d_l2').notEmpty().isInt(),
-    body('notes').trim().escape(),
+    body('med_name').notEmpty().isAlpha({min:2, max:10}),
+    body('bs_low_level').trim().notEmpty().isDecimal,
+    body('dosage_low_level').notEmpty().isInt(),
+    body('bs_high_level').trim().notEmpty().isDecimal,
+    body('dosage_high_level').notEmpty().isInt(),
+    body('note').trim().escape(),
     validationErrorHandler,
     postMedEntry,
   )
-  .get(authenticateToken, getMedEntries);
+
+  medRouter.route('/:id')
+  .get(getMedEntries);
 
 export default medRouter;
 

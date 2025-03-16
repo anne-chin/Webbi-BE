@@ -3,8 +3,8 @@ import promisePool from '../utils/database.js';
 const medDose = async (entry) => {
   try {
     const [result] = await promisePool.query(
-      'INSERT INTO MedDose (user_id, name, bs_l1, d_l1, bs_l2, d_l2, notes) VALUES (?, ?, ?, ?, ? ,?)',
-      [entry.user_id, entry.name, entry.bs_l1, entry.d_l1, entry.bs_l2, entry.d_l2, entry.notes],
+      'INSERT INTO med_dose_calc (user_id, med_name, bs_low_level, dosage_low_level, bs_high_level, dosage_high_level, note) VALUES (?, ?, ?, ?, ?, ? ,?, ?)',
+      [entry.user_id, entry.med_name, entry.bs_low_level, entry.dosage_low_level, entry.bs_high_level, entry.dosage_high_level, entry.note],
     );
     console.log('Medication log: ', result);
     // return only first item of the result array
@@ -15,10 +15,11 @@ const medDose = async (entry) => {
   }
 };
 
+
 const latestMedDose = async (userId) => {
   try {
     const [rows] = await promisePool.query(
-      'SELECT * FROM MedDose WHERE user_id=?',
+      'SELECT * FROM med_dose_calc WHERE user_id=? ORDER BY created_at DESC LIMIT 1',
       [userId],
     );
     console.log(rows);

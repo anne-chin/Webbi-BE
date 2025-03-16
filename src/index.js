@@ -13,8 +13,7 @@ const port = 3000;
 //middleware for FE testing
 app.use(cors());
 
-// static server
-app.use('/', express.static('public'));
+
 // middleware for json body
 app.use(express.json());
 

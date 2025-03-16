@@ -17,12 +17,15 @@ const postMedEntry = async (req, res, next) => {
  * @param {*} res
  */
 const getMedEntries = async (req, res, next) => {
+  console.log('getMedById', req.params.id);
   try {
-    const entries = await latestMedDose(req.user.user_id);
+    const entries = await latestMedDose(req.params.user_id);
     res.json(entries);
   } catch (error) {
     next(error);
   }
 };
+
+
 
 export {postMedEntry, getMedEntries};

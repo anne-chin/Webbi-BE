@@ -25,6 +25,9 @@ userRouter
   );
 
 // all routes to /api/users/:id
-userRouter.route('/:id').get(getUserById).put(editUser).delete(deleteUser);
+userRouter.route('/:id')
+.get(getUserById)
+.put(editUser)
+.delete(deleteUser);
 
 export default userRouter;

@@ -1,11 +1,11 @@
 import bcrypt from 'bcryptjs';
-import {validationResult} from 'express-validator';
 import {
-  insertUser,
   selectAllUsers,
   selectUserById,
+  insertUser,
 } from '../models/user-model.js';
 import {customError} from '../middlewares/error-handler.js';
+import promisePool from '../utils/database.js';
 
 // kaikkien käyttäjätietojen haku
 const getUsers = async (req, res) => {
@@ -36,15 +36,13 @@ const getUserById = async (req, res, next) => {
 // lisätään parempi virheenkäsittely myöhemmin
 const addUser = async (req, res, next) => {
   console.log('addUser request body', req.body);
-  // esitellään 3 uutta muuttujaa, johon sijoitetaan req.body:n vastaavien propertyjen arvot
-  const {username, password, email} = req.body;
-  // luodaan selväkielisestä sanasta tiiviste, joka tallennetaan kantaan
+  const {username, password, birthday, email} = req.body;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-  // luodaan uusi käyttäjä olio ja lisätään se tietokantaa käyttäen modelia
   const newUser = {
     username,
     password: hashedPassword,
+    birthday,
     email,
   };
   try {
@@ -56,18 +54,18 @@ const addUser = async (req, res, next) => {
   }
 };
 
-// Userin muokkaus id:n perusteella (TODO: käytä DB)
-const editUser = (req, res) => {
-  console.log('editUser request body', req.body);
-  const user = users.find((user) => user.id == req.params.id);
-  if (user) {
-    user.username = req.body.username;
-    user.password = req.body.password;
-    user.email = req.body.email;
-    res.json({message: 'User updated.'});
-  } else {
-    res.status(404).json({message: 'User not found'});
+// eit user info from db UPDATE `app_db`.`users` SET `username` = 'R' WHERE (`user_id` = '8');
+const editUser = async (user) => {
+  try{
+    const [result] = await promisePool.query(
+      'UPDATE users SET username=?, password=?, birthday=?, email=? WHERE user_id=?',
+      [user.username, user.password, user.birthday, user.email, user.user_id],
+    );
+    console.log(result)
+  } catch (error) {
+    console.error(error);
   }
+
 };
 
 // Userin poisto id:n perusteella (TODO: käytä DB)

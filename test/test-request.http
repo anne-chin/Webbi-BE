@@ -1,11 +1,11 @@
 ###########################
 ## Med resource endpoints
 
-## get all med log
+## get user med log by id
 GET  http://localhost:3000/api/med/2
 
 ## modify med instruction
-PUT  http://localhost:3000/api/med/2
+POST   http://localhost:3000/api/med/2
 Content-Type: application/json
 {
   "user_id": "2",
@@ -19,8 +19,6 @@ Content-Type: application/json
 
 
 
-content
-
 ###########################
 ## Users resource endpoints
 
@@ -28,40 +26,39 @@ content
 GET http://localhost:3000/api/users
 
 ### get user by id
-GET http://localhost:3000/api/users/3
+GET http://localhost:3000/api/users/12
 
 ### create a new user (user registration)
 POST http://localhost:3000/api/users
 content-type: application/json
 
 {
-  "username": "newusername",
-  "password": "passwordx",
-  "email": "newemail@example.com",
-  "birthday": "1989-05-11"
+  "username": "NewMan2",
+  "password": "newuser2pwd",
+  "birthday": "2019-05-11",
+  "email": "newemail2@example.com"
 }
 
 ### modify an existing user by id
-PUT http://localhost:3000/api/users/3
+PUT http://localhost:3000/api/users/12
 content-type: application/json
 
 {
-  "username": "editedname",
+  "username": "EditedMan",
   "password": "editedpasswordx",
-  "email": "editedmail@example.com",
-  "birthday": "1989-05-12"
+  "birthday": "1989-05-12",
+  "email": "editedmail@example.com"
 }
 
 ### delete a user (by id)
-DELETE http://localhost:3000/api/users/3
+DELETE http://localhost:3000/api/users/8
 
 ### user login
-POST http://localhost:3000/api/users/login
+POST http://localhost:3000/api/auth/login
 content-type: application/json
-
 {
-  "username": "newusername",
-  "password": "passwordx"
+  "username": "Batman",
+  "password": "user1pwd"
 }
 
 ### get my user info
