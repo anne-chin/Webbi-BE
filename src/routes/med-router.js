@@ -1,29 +1,32 @@
 import express from 'express';
-import {postMedEntry, getMedEntries} from '../controllers/med-controller.js';
+import {getEntries, postEntry} from '../controllers/med-controller.js';
 import {authenticateToken} from '../middlewares/authentication.js';
 import {body} from 'express-validator';
 import {validationErrorHandler} from '../middlewares/error-handler.js';
 
 const medRouter = express.Router();
 
-// post to /api/med
-// med dose data: user_id, name, bs_l1, d_l1, bs_l2, d_l2, notes
+// post to /api/entries
 medRouter
   .route('/')
   .post(
     authenticateToken,
-    body('med_name').notEmpty().isAlpha({min:2, max:10}),
-    body('bs_low_level').trim().notEmpty().isDecimal,
-    body('dosage_low_level').notEmpty().isInt(),
-    body('bs_high_level').trim().notEmpty().isDecimal,
-    body('dosage_high_level').notEmpty().isInt(),
-    body('note').trim().escape(),
+    body('entry_date').notEmpty().isDate(),
+    body('med_name').trim().notEmpty().isLength({min: 3, max: 25}).escape(),
+    body('bs_l').isDecimal(),
+    body('dosage_l').isInt({min: 0, max: 20}),
+    body('bs_h').isDecimal(),
+    body('dosage_h').isInt({min: 0, max: 20}),
+    body('notes').notEmpty().trim().escape().custom((value, {req}) => {
+      // customvalidointiesimerkki: jos sisältö sama kuin mood-kentässä
+      // -> ei mee läpi
+      // https://express-validator.github.io/docs/guides/customizing#implementing-a-custom-validator
+      console.log('custom validator', value);
+      return !(req.body.med_name === value);
+    }),
     validationErrorHandler,
-    postMedEntry,
+    postEntry,
   )
-
-  medRouter.route('/:id')
-  .get(getMedEntries);
+  .get(authenticateToken, getEntries);
 
 export default medRouter;
-

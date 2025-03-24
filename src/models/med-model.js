@@ -1,12 +1,12 @@
 import promisePool from '../utils/database.js';
 
-const medDose = async (entry) => {
+const insertEntry = async (entry) => {
   try {
     const [result] = await promisePool.query(
-      'INSERT INTO med_dose_calc (user_id, med_name, bs_low_level, dosage_low_level, bs_high_level, dosage_high_level, note) VALUES (?, ?, ?, ?, ?, ? ,?, ?)',
-      [entry.user_id, entry.med_name, entry.bs_low_level, entry.dosage_low_level, entry.bs_high_level, entry.dosage_high_level, entry.note],
+      'INSERT INTO med_table (user_id, entry_date, med_name, bs_l, dosage_l, bs_h, dosage_h, notes) VALUES (?, ?, ?, ?, ?, ? , ?, ?)',
+      [entry.user_id, entry.entry_date, entry.med_name, entry.bs_l, entry.dosage_l, entry.bs_h, entry.dosage_h, entry.notes],
     );
-    console.log('Medication log: ', result);
+    console.log('inserEntry', result);
     // return only first item of the result array
     return result.insertId;
   } catch (error) {
@@ -15,11 +15,10 @@ const medDose = async (entry) => {
   }
 };
 
-
-const latestMedDose = async (userId) => {
+const selectEntriesByUserId = async (userId) => {
   try {
     const [rows] = await promisePool.query(
-      'SELECT * FROM med_dose_calc WHERE user_id=? ORDER BY created_at DESC LIMIT 1',
+      'SELECT * FROM med_table WHERE user_id=?',
       [userId],
     );
     console.log(rows);
@@ -30,5 +29,4 @@ const latestMedDose = async (userId) => {
   }
 };
 
-export {medDose, latestMedDose};
-
+export {insertEntry, selectEntriesByUserId};

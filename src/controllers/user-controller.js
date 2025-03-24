@@ -1,11 +1,9 @@
 import bcrypt from 'bcryptjs';
 import {
+  insertUser,
   selectAllUsers,
   selectUserById,
-  insertUser,
 } from '../models/user-model.js';
-import {customError} from '../middlewares/error-handler.js';
-import promisePool from '../utils/database.js';
 
 // kaikkien käyttäjätietojen haku
 const getUsers = async (req, res) => {
@@ -15,7 +13,7 @@ const getUsers = async (req, res) => {
 };
 
 // Userin haku id:n perusteella
-const getUserById = async (req, res, next) => {
+const getUserById = async (req, res) => {
   console.log('getUserById', req.params.id);
 
   try {
@@ -28,59 +26,42 @@ const getUserById = async (req, res, next) => {
       res.status(404).json({message: 'User not found'});
     }
   } catch (error) {
-    next(error);
+    res.status(500).json({message: error.message});
   }
 };
 
 // käyttäjän lisäys (rekisteröinti)
 // lisätään parempi virheenkäsittely myöhemmin
-const addUser = async (req, res, next) => {
+const addUser = async (req, res) => {
   console.log('addUser request body', req.body);
-  const {username, password, birthday, email} = req.body;
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  const newUser = {
-    username,
-    password: hashedPassword,
-    birthday,
-    email,
-  };
-  try {
-    const result = await insertUser(newUser);
-    res.status(201);
-    return res.json({message: 'User added. id: ' + result});
-  } catch (error) {
-    return next(customError(error.message, 400));
+  // esitellään 3 uutta muuttujaa, johon sijoitetaan req.body:n vastaavien propertyjen arvot
+  const {username, password, email, birthday} = req.body;
+  // tarkistetaan, että pyynnössä on kaikki tarvittavat tiedot
+  if (username && password && email && birthday) {
+    // luodaan selväkielisestä sanasta tiiviste, joka tallennetaan kantaan
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    // luodaan uusi käyttäjä olio ja lisätään se tietokantaa käyttäen modelia
+    const newUser = {
+      username,
+      password: hashedPassword,
+      email,
+      birthday,
+    };
+    try {
+      const result = await insertUser(newUser);
+      res.status(201);
+      return res.json({message: 'User added. id: ' + result});
+    } catch (error) {
+      console.error(error.message);
+      return res.status(400).json({message: 'DB error: ' + error.message});
+    }
   }
+  res.status(400);
+  return res.json({
+    message: 'Request should have username, password and email properties.',
+  });
 };
 
-// eit user info from db UPDATE `app_db`.`users` SET `username` = 'R' WHERE (`user_id` = '8');
-const editUser = async (user) => {
-  try{
-    const [result] = await promisePool.query(
-      'UPDATE users SET username=?, password=?, birthday=?, email=? WHERE user_id=?',
-      [user.username, user.password, user.birthday, user.email, user.user_id],
-    );
-    console.log(result)
-  } catch (error) {
-    console.error(error);
-  }
 
-};
-
-// Userin poisto id:n perusteella (TODO: käytä DB)
-const deleteUser = (req, res) => {
-  console.log('deleteUser', req.params.id);
-  const index = users.findIndex((user) => user.id == req.params.id);
-  //console.log('index', index);
-  // findIndex returns -1 if user is not found
-  if (index !== -1) {
-    // remove one user from array based on index
-    users.splice(index, 1);
-    res.json({message: 'User deleted.'});
-  } else {
-    res.status(404).json({message: 'User not found'});
-  }
-};
-
-export {getUsers, getUserById, addUser, editUser, deleteUser};
+export {getUsers, getUserById, addUser};

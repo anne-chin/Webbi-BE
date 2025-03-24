@@ -6,7 +6,7 @@ import promisePool from '../utils/database.js';
  */
 const selectAllUsers = async () => {
   const [rows] = await promisePool.query(
-    'SELECT user_id, username, birthday, email, created_at, user_level FROM users',
+    'SELECT user_id, username, email, create_time, user_level FROM Users',
   );
   console.log('selectAllUsers result', rows);
   return rows;
@@ -22,7 +22,7 @@ const selectAllUsers = async () => {
 const selectUserById = async (userId) => {
   try {
     const [rows] = await promisePool.query(
-      'SELECT user_id, username, email, created_at, user_level FROM Users WHERE user_id=?',
+      'SELECT user_id, username, email, create_time, user_level FROM Users WHERE user_id=?',
       [userId],
     );
     console.log(rows);
@@ -40,17 +40,18 @@ const selectUserById = async (userId) => {
  * @returns
  */
 const insertUser = async (user) => {
-  try {
+  // try {
     const [result] = await promisePool.query(
-      'INSERT INTO users (username, password, birthday, email) VALUES (?, ?, ?, ?)',
-      [user.username, user.password, user.birthday, user.email],
+      'INSERT INTO Users (username, password, email, birthday) VALUES (?, ?, ?, ?)',
+      [user.username, user.password, user.email, user.birthday],
     );
     console.log('insertUser', result);
+    // return only first item of the result array
     return result.insertId;
-     } catch (error) {
-    console.error(error);
-    throw new Error('database error');
-  }
+  // } catch (error) {
+  //   console.error(error);
+  //   throw new Error('database error');
+  // }
 };
 
 /**
@@ -62,7 +63,7 @@ const insertUser = async (user) => {
 const selectUserByNameAndPassword = async (username, password) => {
   try {
     const [rows] = await promisePool.query(
-      'SELECT user_id, username, email, created_at, user_level FROM users WHERE username=? AND password=?',
+      'SELECT user_id, username, email, birthday, create_time, user_level FROM Users WHERE username=? AND password=?',
       [username, password],
     );
     console.log(rows);
@@ -82,7 +83,7 @@ const selectUserByNameAndPassword = async (username, password) => {
 const selectUserByUsername = async (username) => {
   try {
     const [rows] = await promisePool.query(
-      'SELECT user_id, username, password, email, created_at, user_level FROM users WHERE username=?',
+      'SELECT user_id, username, password, email, birthday, create_time, user_level FROM Users WHERE username=?',
       [username],
     );
     console.log(rows);

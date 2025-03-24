@@ -1,52 +1,31 @@
 ###########################
-## Med resource endpoints
-
-## get user med log by id
-GET  http://localhost:3000/api/med/2
-
-## modify med instruction
-POST   http://localhost:3000/api/med/2
-Content-Type: application/json
-{
-  "user_id": "2",
-  "name": "QuickIns",
-  "bs_l1": "8",
-  "d_l1": "3",
-  "bs_l2": "4",
-  "ds_l2": "2",
-  "note": "add 1IU every third bd value after 8",
-}
-
-
-
-###########################
 ## Users resource endpoints
 
 ### get all users
 GET http://localhost:3000/api/users
 
 ### get user by id
-GET http://localhost:3000/api/users/12
+GET http://localhost:3000/api/users/3
 
 ### create a new user (user registration)
 POST http://localhost:3000/api/users
 content-type: application/json
 
 {
-  "username": "NewMan2",
-  "password": "newuser2pwd",
-  "birthday": "2019-05-11",
-  "email": "newemail2@example.com"
+  "username": "BatMan",
+  "password": "user4pwd",
+  "email": "bat@example.com",
+  "birthday": "2019-05-13"
 }
 
 ### modify an existing user by id
-PUT http://localhost:3000/api/users/12
+PUT http://localhost:3000/api/users/4
 content-type: application/json
 
 {
   "username": "EditedMan",
-  "password": "editedpasswordx",
-  "birthday": "1989-05-12",
+  "password": "user4pwd",
+  "birthday": "1989-05-14",
   "email": "editedmail@example.com"
 }
 
@@ -56,30 +35,50 @@ DELETE http://localhost:3000/api/users/8
 ### user login
 POST http://localhost:3000/api/auth/login
 content-type: application/json
+
 {
   "username": "Batman",
-  "password": "user1pwd"
+  "password": "user4pwd"
 }
 
 ### get my user info
 GET http://localhost:3000/api/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo3LCJ1c2VybmFtZSI6Im5ld3VzZXJuYW1lIiwiZW1haWwiOiJuZXdlbWFpbEBleGFtcGxlLmNvbSIsImNyZWF0ZWRfYXQiOiIyMDI1LTAyLTA2VDEzOjA5OjA3LjAwMFoiLCJ1c2VyX2xldmVsIjoicmVndWxhciIsImlhdCI6MTczOTM2NTk0MiwiZXhwIjoxNzM5NDUyMzQyfQ.IO9ly-VkHACUPca_TGNlNGLA3brezP-tck1yQ1nFC5M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJ1c2VybmFtZSI6IkJhdE1hbiIsImVtYWlsIjoiYmF0QGV4YW1wbGUuY29tIiwiYmlydGhkYXkiOiIyMDE5LTA1LTEyVDIxOjAwOjAwLjAwMFoiLCJjcmVhdGVfdGltZSI6IjIwMjUtMDMtMjNUMTQ6NTI6NTguMDAwWiIsInVzZXJfbGV2ZWwiOiJyZWd1bGFyIiwiaWF0IjoxNzQyNzQxODA4LCJleHAiOjE3NDI4MjgyMDh9.MGCtDmUDMGaeJrw3sMfYQliHq7TmP_qVCzAYxRQci_A
 
-## (Diary)Entries
 
 ### post a new entry
 POST http://localhost:3000/api/entries
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJuZXd1c2VybmFtZTIiLCJwYXNzd29yZCI6IiQyYSQxMCRNZVpETzZ4ckpIVFNncnVrZ1ZtR2wuaFRLVUp1NjUwc1c1MlNoOHhRcjhHTlJuUlV1N1FXQyIsImVtYWlsIjoibmV3ZW1haWwyQGV4YW1wbGUuY29tIiwiY3JlYXRlZF9hdCI6IjIwMjUtMDItMTNUMTE6NDg6NTIuMDAwWiIsInVzZXJfbGV2ZWwiOiJyZWd1bGFyIiwiaWF0IjoxNzQwNjU1ODA4LCJleHAiOjE3NDA3NDIyMDh9.VdHENb37OV-5CuCTxCdY22BdBpSL90XrNpxM0N-Vh4c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJ1c2VybmFtZSI6IkJhdE1hbiIsImVtYWlsIjoiYmF0QGV4YW1wbGUuY29tIiwiYmlydGhkYXkiOiIyMDE5LTA1LTEyVDIxOjAwOjAwLjAwMFoiLCJjcmVhdGVfdGltZSI6IjIwMjUtMDMtMjNUMTQ6NTI6NTguMDAwWiIsInVzZXJfbGV2ZWwiOiJyZWd1bGFyIiwiaWF0IjoxNzQyNzQxODA4LCJleHAiOjE3NDI4MjgyMDh9.MGCtDmUDMGaeJrw3sMfYQliHq7TmP_qVCzAYxRQci_A
 content-type: application/json
 
 {
- "entry_date": "2025-02-27",
- "mood": "iloinen",
- "weight": 60,
- "sleep_hours": 6,
- "notes": "iloinen"
+ "entry_date": "2025-02-28",
+ "bs_value": "7.0",
+ "given_dose": "3",
+ "giver": "parents",
+ "med_name":"pikapika",
+ "notes": "50g of carb, eaten 55 perc"
 }
 
 ### Get user's entries
 GET http://localhost:3000/api/entries
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJuZXd1c2VybmFtZTIiLCJwYXNzd29yZCI6IiQyYSQxMCRNZVpETzZ4ckpIVFNncnVrZ1ZtR2wuaFRLVUp1NjUwc1c1MlNoOHhRcjhHTlJuUlV1N1FXQyIsImVtYWlsIjoibmV3ZW1haWwyQGV4YW1wbGUuY29tIiwiY3JlYXRlZF9hdCI6IjIwMjUtMDItMTNUMTE6NDg6NTIuMDAwWiIsInVzZXJfbGV2ZWwiOiJyZWd1bGFyIiwiaWF0IjoxNzQwNjU1ODA4LCJleHAiOjE3NDA3NDIyMDh9.VdHENb37OV-5CuCTxCdY22BdBpSL90XrNpxM0N-Vh4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJ1c2VybmFtZSI6IkJhdE1hbiIsImVtYWlsIjoiYmF0QGV4YW1wbGUuY29tIiwiYmlydGhkYXkiOiIyMDE5LTA1LTEyVDIxOjAwOjAwLjAwMFoiLCJjcmVhdGVfdGltZSI6IjIwMjUtMDMtMjNUMTQ6NTI6NTguMDAwWiIsInVzZXJfbGV2ZWwiOiJyZWd1bGFyIiwiaWF0IjoxNzQyNzQxODA4LCJleHAiOjE3NDI4MjgyMDh9.MGCtDmUDMGaeJrw3sMfYQliHq7TmP_qVCzAYxRQci_A
+
+### post a new entry
+POST http://localhost:3000/api/med
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJ1c2VybmFtZSI6IkJhdE1hbiIsImVtYWlsIjoiYmF0QGV4YW1wbGUuY29tIiwiYmlydGhkYXkiOiIyMDE5LTA1LTEyVDIxOjAwOjAwLjAwMFoiLCJjcmVhdGVfdGltZSI6IjIwMjUtMDMtMjNUMTQ6NTI6NTguMDAwWiIsInVzZXJfbGV2ZWwiOiJyZWd1bGFyIiwiaWF0IjoxNzQyNzQxODA4LCJleHAiOjE3NDI4MjgyMDh9.MGCtDmUDMGaeJrw3sMfYQliHq7TmP_qVCzAYxRQci_A
+content-type: application/json
+
+{
+ "entry_date": "2025-03-29",
+ "med_name":"pikapika",
+ "bs_l": "7.0",
+ "dosage_l": "2",
+ "bs_h": "9.0",
+ "dosage_h": "3",
+ "notes": "do not give ins below 5, case of below2.5 contact emergency"
+}
+
+### Get user's entries
+GET http://localhost:3000/api/med
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJ1c2VybmFtZSI6IkJhdE1hbiIsImVtYWlsIjoiYmF0QGV4YW1wbGUuY29tIiwiYmlydGhkYXkiOiIyMDE5LTA1LTEyVDIxOjAwOjAwLjAwMFoiLCJjcmVhdGVfdGltZSI6IjIwMjUtMDMtMjNUMTQ6NTI6NTguMDAwWiIsInVzZXJfbGV2ZWwiOiJyZWd1bGFyIiwiaWF0IjoxNzQyNzQxODA4LCJleHAiOjE3NDI4MjgyMDh9.MGCtDmUDMGaeJrw3sMfYQliHq7TmP_qVCzAYxRQci_A

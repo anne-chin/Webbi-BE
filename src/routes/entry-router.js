@@ -7,17 +7,22 @@ import {validationErrorHandler} from '../middlewares/error-handler.js';
 const entryRouter = express.Router();
 
 // post to /api/entries
-// entry data: user_id, entry_date, bs, insulin, giver, notes
-
 entryRouter
   .route('/')
   .post(
     authenticateToken,
     body('entry_date').notEmpty().isDate(),
-    body('bs').trim().notEmpty().isDecimal,
-    body('insulin').isAlpha({min: 2, max: 20}),
-    body('giver').notEmpty().isAlpha({min: 2, max: 10}),
-    body('notes').trim().escape(),
+    body('bs_value').isDecimal(),
+    body('given_dose').isInt({min: 0, max: 20}),
+    body('giver').notEmpty().isLength({min: 2, max: 25}).escape(),
+    body('med_name').trim().notEmpty().isLength({min: 3, max: 25}).escape(),
+    body('notes').trim().escape().custom((value, {req}) => {
+      // customvalidointiesimerkki: jos sisältö sama kuin mood-kentässä
+      // -> ei mee läpi
+      // https://express-validator.github.io/docs/guides/customizing#implementing-a-custom-validator
+      console.log('custom validator', value);
+      return !(req.body.giver === value);
+    }),
     validationErrorHandler,
     postEntry,
   )
